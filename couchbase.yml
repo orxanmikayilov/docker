@@ -1,0 +1,37 @@
+---
+
+version: '3.7'  # Upgrade version for better feature support
+
+services:
+  cb1:
+    image: couchbase/server
+    container_name: cb1
+    volumes:
+      - ~/cb/node1:/opt/couchbase/var
+    networks:
+      - couchbase_network
+
+  cb2:
+    image: couchbase/server
+    container_name: cb2
+    volumes:
+      - ~/cb/node2:/opt/couchbase/var
+    networks:
+      - couchbase_network
+
+  cb3:
+    image: couchbase/server
+    container_name: cb3
+    volumes:
+      - ~/cb/node3:/opt/couchbase/var
+    ports:  # Expose ports only for one node to avoid conflict and for cluster management
+      - 8091:8091
+      - 8092:8092
+      - 8093:8093
+      - 11210:11210
+    networks:
+      - couchbase_network
+
+networks:
+  couchbase_network:  # Define a network for inter-service communication
+    driver: bridge
