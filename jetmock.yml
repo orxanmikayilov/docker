@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+
+  jetmock-engine:
+    image: orxanmikayilov/jetmock-engine:latest
+    ports:
+      - "9090:9090"
+    environment:
+      - SERVER_PORT=9090
+    volumes:
+      - rocksdb_data:/data/rocksdb
+
+  jetmock-ui:
+    image: orxanmikayilov/jetmock-ui:latest
+    ports:
+      - "3030:3030"
+    environment:
+      - PORT=3030
+      - NEXT_PUBLIC_API_URL=http://localhost:9090
+    depends_on:
+      - jetmock-engine
+
+volumes:
+  pgdata:
+  rocksdb_data:
